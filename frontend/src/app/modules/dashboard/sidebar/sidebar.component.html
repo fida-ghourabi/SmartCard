@@ -1,0 +1,57 @@
+<aside class="sidebar">
+  <div class="sidebar-content">
+    <nav class="sidebar-nav">
+      <ul class="nav-list">
+        <li *ngFor="let item of menuItems" class="nav-item">
+          <div class="nav-item-wrapper"
+               [class.active]="activeItem === item.id"
+               [class.has-submenu]="item.hasSubmenu"
+               (click)="setActiveItem(item.id)">
+
+            <!-- Lien normal sauf logout -->
+            <a *ngIf="!item.hasSubmenu && item.id !== 'logout'"
+               [routerLink]="item.route"
+               class="nav-link"
+               routerLinkActive="active"
+               [routerLinkActiveOptions]="{ exact: true }">
+              <span class="nav-icon">{{ item.icon }}</span>
+              <span class="nav-label">{{ item.label }}</span>
+            </a>
+
+            <!-- Lien logout -->
+            <a *ngIf="item.id === 'logout'" href="#" class="nav-link" (click)="$event.preventDefault(); logout()">
+              <span class="nav-icon">{{ item.icon }}</span>
+              <span class="nav-label">{{ item.label }}</span>
+            </a>
+
+            <!-- Lien avec sous-menu -->
+            <a *ngIf="item.hasSubmenu"
+               href="#"
+               class="nav-link"
+               (click)="$event.preventDefault()">
+              <span class="nav-icon">{{ item.icon }}</span>
+              <span class="nav-label">{{ item.label }}</span>
+              <span class="submenu-arrow" [class.expanded]="simulationExpanded && item.id === 'simulation'">▼</span>
+            </a>
+          </div>
+
+          <!-- Sous-menu -->
+          <ul *ngIf="item.hasSubmenu && simulationExpanded && item.id === 'simulation'" class="submenu">
+            <li *ngFor="let subItem of item.submenu"
+                class="submenu-item"
+                [class.active]="activeItem === subItem.id"
+                (click)="setActiveItem(subItem.id)">
+              <a [routerLink]="subItem.route"
+                 class="submenu-link"
+                 routerLinkActive="active">
+                <span class="nav-icon">{{ subItem.icon }}</span>
+                <span class="nav-label">{{ subItem.label }}</span>
+              </a>
+            </li>
+          </ul>
+
+        </li>
+      </ul>
+    </nav>
+  </div>
+</aside>

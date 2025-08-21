@@ -1,0 +1,118 @@
+<div class="dashboard-overview">
+  <!-- Welcome Section -->
+  <div class="welcome-section">
+    <div class="welcome-content">
+      <div class="greeting">
+        <h1>{{ getGreeting() }}, {{ client }}!</h1>
+        <p class="welcome-subtitle">Voici un aperçu de vos comptes bancaires</p>
+      </div>
+      <div class="date-info">
+        <span class="current-date">{{ getCurrentDate() }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <div class="stat-card balance-card">
+      <div class="stat-icon">💰</div>
+      <div class="stat-content">
+        <h3>Solde Total</h3>
+        <p class="stat-value">{{ totalBalance | number:'1.2-2' }} TND</p>
+        <span class="stat-label">Tous comptes confondus</span>
+      </div>
+    </div>
+
+    <div class="stat-card cards-card">
+      <div class="stat-icon">💳</div>
+      <div class="stat-content">
+        <h3>Cartes Actives</h3>
+        <p class="stat-value">{{ activeCards }}/{{ cards.length }}</p>
+        <span class="stat-label">Cartes disponibles</span>
+      </div>
+    </div>
+
+    
+
+    <div class="stat-card transaction-card">
+      <div class="stat-icon">🔄</div>
+      <div class="stat-content">
+        <h3>Dernière Transaction</h3>
+        <p class="stat-value" *ngIf="lastTransaction">{{ lastTransaction.montant | number:'1.2-2' }} TND</p>
+        <span class="stat-label" *ngIf="lastTransaction">{{ lastTransaction.date | date:'dd/MM/yyyy' }}</span>
+        <span class="stat-label" *ngIf="!lastTransaction">Aucune transaction</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="quick-actions-section">
+    <h2>Actions Rapides</h2>
+    <div class="actions-grid">
+      <div class="action-card">
+        <div class="action-icon">💸</div>
+        <h3>Simuler un Retrait</h3>
+        <p>Testez vos retraits</p>
+        <button class="action-btn" [routerLink]="['simulation/retrait']">Commencer</button>
+      </div>
+
+      <div class="action-card">
+        <div class="action-icon">💳</div>
+        <h3>Simuler un Paiement</h3>
+        <p>Testez vos paiements en ligne</p>
+        <button class="action-btn" [routerLink]="['simulation/paiement']">Commencer</button>
+      </div>
+
+      <div class="action-card">
+        <div class="action-icon">🔄</div>
+        <h3>Transfert entre Cartes</h3>
+        <p>Testez facilement vos transferts</p>
+        <button class="action-btn" [routerLink]="['simulation/transfert']">Commencer</button>
+      </div>
+
+      <div class="action-card">
+        <div class="action-icon">📈</div>
+        <h3>Historique Complet</h3>
+        <p>Consultez toutes vos transactions</p>
+        <button class="action-btn" [routerLink]="['historique']">Voir</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cards Overview -->
+  <div class="cards-overview-section">
+    <h2>Aperçu de vos Cartes</h2>
+    <div class="cards-summary">
+      <div *ngFor="let card of cards" class="card-summary-item">
+        <div class="card-summary-visual">
+          <img [src]="'https://images.pexels.com/photos/259200/pexels-photo-259200.jpeg?auto=compress&cs=tinysrgb&w=400'" [alt]="card.typeCarte">
+          <div class="card-summary-overlay">
+            <span class="card-type">{{ card.typeCarte }}</span>
+          </div>
+        </div>
+        <div class="card-summary-info">
+          <div class="card-summary-header">
+            <h4>xxxx xxxx xxxx {{ (card.numeroCarte || '') | slice:-4 }}</h4>
+            <span class="status-badge" [class]="getStatusClass(card.etatCarte)">
+              {{ card.etatCarte }}
+            </span>
+          </div>
+          <div class="card-summary-balance">
+            <span class="balance-amount">{{ card.solde | number:'1.2-2' }} TND</span>
+          </div>
+          <div class="card-summary-limits">
+            <div class="limit-info">
+              <span class="limit-label">Retrait:</span>
+              <span class="limit-value">{{ card.plafondRetrait | number:'1.0-0' }} TND</span>
+            </div>
+            <div class="limit-info">
+              <span class="limit-label">Paiement:</span>
+              <span class="limit-value">{{ card.plafondPaiement | number:'1.0-0' }} TND</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ 

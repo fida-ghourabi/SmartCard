@@ -1,0 +1,6 @@
+@STB.SmartCard.API_HostAddress = http://localhost:5172
+
+GET {{STB.SmartCard.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,149 @@
+<div class="simulation-container">
+  <div class="simulation-header">
+    <h2>Simulation de Retrait</h2>
+    <p>Simulez un retrait d'espèces depuis votre carte</p>
+  </div>
+
+  <div class="simulation-form">
+    <div class="form-section">
+      <h3>Informations du retrait</h3>
+
+      <!-- Sélection de la carte -->
+      <div class="form-group">
+        <label for="cardSelect">Sélectionner une carte:</label>
+        <select id="cardSelect" [(ngModel)]="selectedCardId" (change)="onCardChange()" class="form-select">
+          <option value="">Choisir une carte...</option>
+          <option *ngFor="let card of cards" [value]="card.id">
+            {{ card.typeCarte }} - xxxx xxxx xxxx {{ (card.numeroCarte || '') | slice:-4 }} ({{ card.solde | number:'1.2-2' }} TND)
+          </option>
+        </select>
+      </div>
+
+      <!-- Montant -->
+      <div class="form-group" *ngIf="selectedCard">
+        <label for="amount">Montant à retirer (TND):</label>
+        <input type="number" id="amount" [(ngModel)]="amount"  min="1" step="1" class="form-input" placeholder="Entrez le montant">
+        <div class="input-info">
+          <span>Plafond de retrait: {{ selectedCard.plafondRetrait | number:'1.2-2' }} TND</span>
+          <span>Solde disponible: {{ selectedCard.solde | number:'1.2-2' }} TND</span>
+        </div>
+      </div>
+
+      <!-- Type de retrait -->
+      <div class="form-group">
+        <label for="withdrawalType">Type de retrait:</label>
+        <select id="withdrawalType" [(ngModel)]="withdrawalType" class="form-select">
+          <option value="">Choisir...</option>
+          <option *ngFor="let type of withdrawalTypes" [value]="type.value">{{ type.label }}</option>
+        </select>
+      </div>
+
+      <!-- Lieu du retrait -->
+      <div class="form-group" *ngIf="withdrawalType">
+        <label for="location">Lieu de retrait (ville ou agence):</label>
+        <select id="location" [(ngModel)]="location" class="form-select">
+          <option value="">Sélectionner un lieu</option>
+          <option *ngFor="let loc of locations" [value]="loc">{{ loc }}</option>
+        </select>
+      </div>
+
+      <!-- Nom de la banque (si GAB) -->
+      <div class="form-group" *ngIf="withdrawalType === 'GAB'">
+        <label for="bankName">Nom de la banque:</label>
+        <select id="bankName" [(ngModel)]="bankName" class="form-select">
+          <option value="">Sélectionner une banque</option>
+          <option *ngFor="let bank of banks" [value]="bank">{{ bank }}</option>
+        </select>
+      </div>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <button class="btn btn-primary" (click)="simulateWithdrawal()" [disabled]="!selectedCard || !amount  || amount <= 0 || isSimulating">
+          <span *ngIf="isSimulating">Simulation en cours...</span>
+          <span *ngIf="!isSimulating">Simuler le retrait</span>
+        </button>
+        <button class="btn btn-secondary" (click)="resetSimulation()">Réinitialiser</button>
+      </div>
+    </div>
+
+    <!-- Carte sélectionnée -->
+    <div class="card-preview" *ngIf="selectedCard">
+      <h3>Carte sélectionnée</h3>
+      <div class="card-visual">
+        <img [src]="selectedCard.imageUrl" [alt]="selectedCard.typeCarte">
+        <div class="card-overlay">
+          <div class="card-info">
+            <h4>{{ selectedCard.typeCarte }}</h4>
+            <p> xxxx xxxx xxxx {{ (selectedCard.numeroCarte || '') | slice:-4 }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="card-limits">
+        <div class="limit-item">
+          <span class="limit-label">Plafond retrait:</span>
+          <span class="limit-value">{{ selectedCard.plafondRetrait | number:'1.2-2' }} TND</span>
+        </div>
+        <div class="limit-item">
+          <span class="limit-label">Solde actuel:</span>
+          <span class="limit-value">{{ selectedCard.solde | number:'1.2-2' }} TND</span>
+        </div>
+         <div class="limit-item" *ngIf="withdrawalType">
+          <span class="limit-label">Type de retrait :</span>
+          <span class="limit-value">{{ withdrawalType }}</span>
+        </div>
+        <div class="limit-item" *ngIf="location">
+          <span class="limit-label">Lieu :</span>
+          <span class="limit-value">{{ location }}</span>
+        </div>
+        <div class="limit-item" *ngIf="bankName">
+          <span class="limit-label">Banque :</span>
+          <span class="limit-value">{{ bankName }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Résultat -->
+  <div class="simulation-result" *ngIf="simulationResult">
+    <h3>Résultat de la simulation</h3>
+    <div class="result-card" [class.success]="simulationResult.success" [class.error]="!simulationResult.success">
+      <div class="result-header">
+        <span class="result-icon">{{ simulationResult.success ? '✅' : '❌' }}</span>
+        <span class="result-message">{{ simulationResult.message }}</span>
+      </div>
+
+      <div class="result-details">
+        <div class="detail-row">
+          <span>Montant demandé:</span>
+          <span class="amount">{{ simulationResult.amount | number:'1.2-2' }} TND</span>
+        </div>
+        <div class="detail-row">
+          <span>Solde actuel:</span>
+          <span class="amount">{{ simulationResult.currentBalance | number:'1.2-2' }} TND</span>
+        </div>
+        <div class="detail-row">
+          <span>Solde après retrait:</span>
+          <span class="amount" [class.negative]="simulationResult.newBalance < 0">
+            {{ simulationResult.newBalance | number:'1.2-2' }} TND
+          </span>
+        </div>
+        <div class="detail-row">
+          <span>Plafond de retrait:</span>
+          <span class="amount">{{ simulationResult.withdrawalLimit | number:'1.2-2' }} TND</span>
+        </div>
+        <div class="detail-row">
+          <span>Type de retrait:</span>
+          <span class="amount">{{ simulationResult.withdrawalType }}</span>
+        </div>
+        <div class="detail-row" *ngIf="simulationResult.location">
+          <span>Lieu:</span>
+          <span class="amount">{{ simulationResult.location }}</span>
+        </div>
+        <div class="detail-row" *ngIf="simulationResult.bankName">
+          <span>Banque :</span>
+          <span class="amount">{{ simulationResult.bankName }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

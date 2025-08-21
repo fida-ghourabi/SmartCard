@@ -1,0 +1,135 @@
+<div class="simulation-container">
+  <div class="simulation-header">
+    <h2>Simulation de Paiement</h2>
+    <p>Simulez un paiement par carte bancaire</p>
+  </div>
+
+  <div class="simulation-form">
+    <div class="form-section">
+      <h3>Informations du paiement</h3>
+      
+      <div class="form-group">
+        <label for="cardSelect">Sélectionner une carte:</label>
+        <select 
+          id="cardSelect"
+          [(ngModel)]="selectedCardId" 
+          (change)="onCardChange()"
+          class="form-select">
+          <option value="">Choisir une carte...</option>
+          <option *ngFor="let card of cards" [value]="card.id">
+            {{ card.typeCarte }} - xxxx xxxx xxxx {{ (card.numeroCarte || '') | slice:-4 }} ({{ card.solde | number:'1.2-2' }} TND)
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group" *ngIf="selectedCard">
+        <label for="amount">Montant à payer (TND):</label>
+        <input 
+          type="number" 
+          id="amount"
+          [(ngModel)]="amount"
+          min="0.01"
+          step="0.01"
+          class="form-input"
+          placeholder="Entrez le montant">
+        <div class="input-info">
+          <span>Plafond de paiement: {{ selectedCard.plafondPaiement | number:'1.2-2' }} TND</span>
+          <span>Solde disponible: {{ selectedCard.solde | number:'1.2-2' }} TND</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="merchant">Marchand:</label>
+        <select 
+          id="merchant"
+          [(ngModel)]="merchant"
+          class="form-select">
+          <option value="">Sélectionner un type de marchand...</option>
+          <option *ngFor="let category of merchantCategories" [value]="category">
+            {{ category }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <button 
+          class="btn btn-primary" 
+          (click)="simulatePayment()"
+          [disabled]="!selectedCard || !amount || amount <= 0 || !merchant.trim() || isSimulating">
+          <span *ngIf="isSimulating">Simulation en cours...</span>
+          <span *ngIf="!isSimulating">Simuler le paiement</span>
+        </button>
+        <button class="btn btn-secondary" (click)="resetSimulation()">
+          Réinitialiser
+        </button>
+      </div>
+    </div>
+
+    <div class="card-preview" *ngIf="selectedCard">
+      <h3>Carte sélectionnée</h3>
+      <div class="card-visual">
+        <img [src]="selectedCard.imageUrl" [alt]="selectedCard.typeCarte">
+        <div class="card-overlay">
+          <div class="card-info">
+            <h4>{{ selectedCard.typeCarte  }}</h4>
+            <p> xxxx xxxx xxxx {{ (selectedCard.numeroCarte || '') | slice:-4 }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="card-limits">
+        <div class="limit-item">
+          <span class="limit-label">Plafond paiement:</span>
+          <span class="limit-value">{{ selectedCard.plafondPaiement | number:'1.2-2' }} TND</span>
+        </div>
+        <div class="limit-item">
+          <span class="limit-label">Solde actuel:</span>
+          <span class="limit-value">{{ selectedCard.solde | number:'1.2-2' }} TND</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="simulation-result" *ngIf="simulationResult">
+    <h3>Résultat de la simulation</h3>
+    <div class="result-card" [class.success]="simulationResult.success" [class.error]="!simulationResult.success">
+      <div class="result-header">
+        <span class="result-icon">{{ simulationResult.success ? '✅' : '❌' }}</span>
+        <span class="result-message">{{ simulationResult.message }}</span>
+      </div>
+      
+      <div class="result-details">
+        <div class="detail-row">
+          <span>Marchand:</span>
+          <span class="merchant">{{ simulationResult.merchant }}</span>
+        </div>
+        <div class="detail-row">
+          <span>Montant à payer:</span>
+          <span class="amount">{{ simulationResult.amount | number:'1.2-2' }} TND</span>
+        </div>
+        <div class="detail-row">
+          <span>Solde actuel:</span>
+          <span class="amount">{{ simulationResult.currentBalance | number:'1.2-2' }} TND</span>
+        </div>
+        <div class="detail-row">
+          <span>Solde après paiement:</span>
+          <span class="amount" [class.negative]="simulationResult.newBalance < 0">
+            {{ simulationResult.newBalance | number:'1.2-2' }} TND
+          </span>
+        </div>
+        <div class="detail-row">
+          <span>Plafond de paiement:</span>
+          <span class="amount">{{ simulationResult.paymentLimit | number:'1.2-2' }} TND</span>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- OTP Verification Modal -->
+  <app-otp-verification 
+    *ngIf="showOtpVerification"
+    [transactionData]="transactionData"
+    [phoneNumber]="phoneNumber"
+    (otpVerified)="onOtpVerified($event)"
+    (cancel)="onOtpCancelled()">
+  </app-otp-verification>
+  
+</div>

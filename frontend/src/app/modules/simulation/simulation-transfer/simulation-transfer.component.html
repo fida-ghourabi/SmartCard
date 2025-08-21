@@ -1,0 +1,156 @@
+<div class="simulation-container">
+  <div class="simulation-header">
+    <h2>Simulation de Transfert</h2>
+    <p>Simulez un transfert entre vos cartes bancaires</p>
+  </div>
+
+  <div class="simulation-form">
+    <div class="form-section">
+      <h3>Informations du transfert</h3>
+      
+      <div class="form-group">
+        <label for="sourceCardSelect">Carte source:</label>
+        <select 
+          id="sourceCardSelect"
+          [(ngModel)]="sourceCardId" 
+          (change)="onSourceCardChange()"
+          class="form-select">
+          <option value="">Choisir la carte source...</option>
+          <option *ngFor="let card of cards" [value]="card.id">
+            {{ card.typeCarte }} - xxxx xxxx xxxx {{ (card.numeroCarte || '') | slice:-4 }} ({{ card.solde | number:'1.2-2' }} TND)
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="destinationCardSelect">Compte destination:</label>
+        <input 
+          id="destinationCardSelect"
+          [(ngModel)]="destinationCompte" 
+          class="form-input"
+          [disabled]="!sourceCardId">
+          
+        
+      </div>
+
+      <div class="form-group" *ngIf="sourceCard">
+        <label for="amount">Montant à transférer (TND):</label>
+        <input 
+          type="number" 
+          id="amount"
+          [(ngModel)]="amount"
+          min="0.01"
+          step="0.01"
+          class="form-input"
+          placeholder="Entrez le montant">
+        <div class="input-info">
+          <span>Solde disponible: {{ sourceCard.solde  | number:'1.2-2' }} TND</span>
+        </div>
+      </div>
+
+      
+      <div class="form-actions">
+        <button 
+          class="btn btn-primary" 
+          (click)="simulateTransfer()"
+          [disabled]="!sourceCard || !destinationCompte || !amount || amount <= 0 || isSimulating">
+          <span *ngIf="isSimulating">Simulation en cours...</span>
+          <span *ngIf="!isSimulating">Simuler le transfert</span>
+        </button>
+        <button class="btn btn-secondary" (click)="resetSimulation()">
+          Réinitialiser
+        </button>
+      </div>
+    </div>
+
+    <div class="cards-preview" *ngIf="sourceCard || destinationCompte">
+      <h3>Cartes sélectionnées</h3>
+      
+      <div class="card-preview" *ngIf="sourceCard">
+        <h4>Carte Source</h4>
+        <div class="card-visual">
+          <img [src]="sourceCard.imageUrl" [alt]="sourceCard.typeCarte">
+          <div class="card-overlay">
+            <div class="card-info">
+              <h5>{{ sourceCard.typeCarte }}</h5>
+            <p> xxxx xxxx xxxx {{ (sourceCard.numeroCarte || '') | slice:-4 }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-balance">
+          <span class="balance-label">Solde actuel:</span>
+          <span class="balance-value">{{ sourceCard.solde | number:'1.2-2' }} TND</span>
+        </div>
+      </div>
+
+      <div class="transfer-arrow" *ngIf="sourceCard && destinationCompte">
+        <span>→</span>
+      </div>
+
+      <div class="card-preview" *ngIf="destinationCompte">
+        <h4>Compte Destination</h4>
+        
+        <div class="card-balance">
+          <span class="balance-value">{{ destinationCompte}} </span>
+        </div>
+        <div class="card-balance">
+          <span class="balance-label">Montant transféré:</span>
+          <span class="balance-value">{{ amount}} TND</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="simulation-result" *ngIf="simulationResult">
+    <h3>Résultat de la simulation</h3>
+    <div class="result-card" [class.success]="simulationResult.success" [class.error]="!simulationResult.success">
+      <div class="result-header">
+        <span class="result-icon">{{ simulationResult.success ? '✅' : '❌' }}</span>
+        <span class="result-message">{{ simulationResult.message }}</span>
+      </div>
+      
+      <div class="result-details">
+        <div class="detail-section">
+          <h4>Détails du transfert</h4>
+          <div class="detail-row">
+            <span>Montant:</span>
+            <span class="amount">{{ simulationResult.amount | number:'1.2-2' }} TND</span>
+          </div>
+          <div class="detail-row">
+            <span>Compte destination:</span>
+            <span class="destinationCompte">{{ simulationResult.compteDestinataire }}</span>
+          </div>
+        </div>
+
+        <div class="cards-summary">
+          <div class="card-summary">
+            <h5>{{ simulationResult.typeCarte }}</h5>
+            <p>xxxx xxxx xxxx {{ (simulationResult.numeroCarte  || '') | slice:-4 }} </p>
+            <div class="balance-change">
+              <span class="before">{{ simulationResult.currentBalance | number:'1.2-2' }} TND</span>
+              <span class="arrow">→</span>
+              <span class="after" [class.negative]="simulationResult.newBalance < 0">
+                {{ simulationResult.newBalance | number:'1.2-2' }} TND
+              </span>
+            </div>
+          </div>
+
+          <div class="card-summary">
+            <h5>{{ simulationResult.compteDestinataire }}</h5>
+            <p>{{ simulationResult.amount }}</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- OTP Verification Modal -->
+  <app-otp-verification 
+    *ngIf="showOtpVerification"
+    [transactionData]="transactionData"
+    [phoneNumber]="phoneNumber"
+    (otpVerified)="onOtpVerified($event)"
+    (cancel)="onOtpCancelled()">
+  </app-otp-verification>
+  
+</div>

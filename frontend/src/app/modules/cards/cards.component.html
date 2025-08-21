@@ -1,0 +1,37 @@
+<div class="cards-container">
+  <div class="cards-header">
+    <h2>Mes Cartes Bancaires</h2>
+    <p>Gérez vos cartes et consultez vos informations</p>
+  </div>
+
+
+<div *ngIf="loading">Chargement...</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <div class="cards-grid">
+    <div *ngFor="let card of cards" class="card-item" (click)="selectCard(card)">
+      <div class="card-image">
+<img [src]="'https://images.pexels.com/photos/259200/pexels-photo-259200.jpeg?auto=compress&cs=tinysrgb&w=400'" [alt]="card.typeCarte">
+        <div class="card-overlay">
+          <div class="card-info">
+            <h3>{{ card.typeCarte }}</h3>
+            <p>{{ maskCardNumber(card.numeroCarte) }}</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card-details">
+        <div class="card-status">
+          <span class="status-badge" [class]="getStatusClass(card.etatCarte)">
+            {{ card.etatCarte === 'Desactive' ? 'Désactivé' : (card.etatCarte === 'Bloque' ? 'Bloqué' : 'Active') }}
+          </span>
+        </div>
+        
+        <div class="card-balance">
+          <span class="balance-label">Solde disponible</span>
+          <span class="balance-amount">{{ card.solde | number:'1.2-2' }} TND</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

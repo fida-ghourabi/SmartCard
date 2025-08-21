@@ -1,0 +1,135 @@
+.sidebar {
+  width: 250px;
+  height: calc(100vh - 80px);
+  background: white;
+  border-right: 1px solid #e5e7eb;
+  position: fixed;
+  top: 80px;
+  left: 0;
+  z-index: 900;
+  overflow-y: auto;
+}
+
+.sidebar-content {
+  padding: 2rem 0;
+}
+
+.sidebar-nav {
+  height: 100%;
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-item {
+  margin-bottom: 0.5rem;
+  padding: 0 1rem;
+}
+
+.nav-item-wrapper {
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  color: #6b7280;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.nav-link:hover {
+  background: #f3f4f6;
+  color: #1e3c72;
+}
+
+.nav-item-wrapper.active .nav-link {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(30, 60, 114, 0.3);
+}
+
+.nav-icon {
+  font-size: 1.2rem;
+  width: 24px;
+  text-align: center;
+}
+
+.nav-label {
+  font-weight: 500;
+  font-size: 0.95rem;
+  flex: 1;
+}
+
+.submenu-arrow {
+  font-size: 0.8rem;
+  transition: transform 0.3s ease;
+}
+
+.submenu-arrow.expanded {
+  transform: rotate(180deg);
+}
+
+.submenu {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0 0;
+  background: #f9fafb;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.submenu-item {
+  margin: 0;
+  padding: 0;
+}
+
+.submenu-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem 0.75rem 3rem;
+  color: #6b7280;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.submenu-link:hover {
+  background: #e5e7eb;
+  color: #1e3c72;
+}
+
+.submenu-item.active .submenu-link {
+  background: #1e3c72;
+  color: white;
+}
+
+.submenu-item.active .submenu-link .nav-icon {
+  color: #ffd700;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 200px;
+  }
+  
+  .nav-label {
+    font-size: 0.9rem;
+  }
+  
+  .submenu-link {
+    padding-left: 2.5rem;
+    font-size: 0.85rem;
+  }
+}

@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36221.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "STB.SmartCard.API", "STB.SmartCard.API\STB.SmartCard.API.csproj", "{D8E9D5F5-C609-4E85-B3DC-91102AA228E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "STB.SmartCard.Application", "STB.SmartCard.Application\STB.SmartCard.Application.csproj", "{3675BC01-8A80-4153-A34C-79291FF79FDB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "STB.SmartCard.Domain", "STB.SmartCard.Domain\STB.SmartCard.Domain.csproj", "{E80C06B4-FF67-4C4B-9EBF-33A3EC0F66FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "STB.SmartCard.Infrastructure", "STB.SmartCard.Infrastructure\STB.SmartCard.Infrastructure.csproj", "{EBFC46B9-CB47-4EC2-B196-6D948F616D3D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Éléments de solution", "Éléments de solution", "{9C8CB701-102D-CF49-A3E0-89AC09D42C2C}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D8E9D5F5-C609-4E85-B3DC-91102AA228E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8E9D5F5-C609-4E85-B3DC-91102AA228E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8E9D5F5-C609-4E85-B3DC-91102AA228E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8E9D5F5-C609-4E85-B3DC-91102AA228E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3675BC01-8A80-4153-A34C-79291FF79FDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3675BC01-8A80-4153-A34C-79291FF79FDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3675BC01-8A80-4153-A34C-79291FF79FDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3675BC01-8A80-4153-A34C-79291FF79FDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E80C06B4-FF67-4C4B-9EBF-33A3EC0F66FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E80C06B4-FF67-4C4B-9EBF-33A3EC0F66FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E80C06B4-FF67-4C4B-9EBF-33A3EC0F66FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E80C06B4-FF67-4C4B-9EBF-33A3EC0F66FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBFC46B9-CB47-4EC2-B196-6D948F616D3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBFC46B9-CB47-4EC2-B196-6D948F616D3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBFC46B9-CB47-4EC2-B196-6D948F616D3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBFC46B9-CB47-4EC2-B196-6D948F616D3D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B8D2BC3C-56DE-4122-BD31-3B8CEAC6E92A}
+	EndGlobalSection
+EndGlobal

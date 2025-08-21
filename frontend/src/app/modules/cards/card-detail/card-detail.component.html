@@ -1,0 +1,174 @@
+<div class="card-detail-container">
+  <div class="card-detail-header">
+    <button class="back-btn" (click)="goBack()">
+      <span class="back-icon">←</span>
+      Retour aux cartes
+    </button>
+    <h2>Détails de la carte</h2>
+  </div>
+
+  <div class="card-detail-content" *ngIf="card">
+    <div class="card-visual-section">
+      <div class="card-visual">
+        <img [src]="'https://images.pexels.com/photos/259200/pexels-photo-259200.jpeg?auto=compress&cs=tinysrgb&w=400'" [alt]="card.typeCarte">
+        <div class="card-overlay">
+          <div class="card-info">
+            <h3>{{ card.typeCarte }}</h3>
+            <p>{{ maskCardNumber(card.numeroCarte) }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-details-grid">
+      <div class="card-info-section">
+        <h3>Informations de la carte</h3>
+        <div class="detail-group">
+          <label>Type de carte</label>
+          <span>{{ card.typeCarte }}</span>
+        </div>
+
+        <div class="detail-group">
+          <label>État</label>
+          <span class="status-badge" [class]="getStatusClass(card.etatCarte)">
+            {{ card.etatCarte }}
+          </span>
+        </div>
+
+        <div class="detail-group">
+          <label>Compte lié</label>
+          <span>{{ card.numCompte }}</span>
+        </div>
+
+        <div class="detail-group">
+          <label>Solde</label>
+          <span class="balance">{{ card.solde | number:'1.2-2' }} TND</span>
+        </div>
+
+         <div class="detail-group">
+          <label>Date de création</label>
+          <span>{{ card.dateCreation | date:'dd/MM/yyyy' }}</span>
+        </div>
+
+         <div class="detail-group">
+          <label>date d’expiration</label>
+          <span>{{ card.dateExpiration | date:'MM/yyyy' }}</span>
+        </div>
+      </div>
+
+      <div class="client-info-section">
+        <h3>Informations client</h3>
+        <div class="client-details">
+          <div class="detail-group">
+            <label>Prenom </label>
+            <span>{{ card.clientPrenom }}</span>
+          </div>
+          <div class="detail-group">
+            <label>Nom</label>
+            <span>{{ card.clientNom }}</span>
+          </div>
+            <div class="detail-group">
+            <label>Telephone</label>
+            <span>{{ card.clientTelephone }}</span>
+          </div>
+          <div class="detail-group">
+            <label>Email</label>
+            <span>{{ card.clientEmail }}</span>
+          </div>
+          <div class="detail-group">
+            <label>Nom du porteur</label>
+            <span>{{ card.nomPorteur }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="limits-section">
+      <h3>Gestion des plafonds</h3>
+      
+      <div class="limits-grid">
+        <div class="limit-group">
+          <label>Plafond Retrait</label>
+          <div class="limit-control">
+            <input 
+              type="range" 
+              [min]="0" 
+              [max]="card.plafondRetraitMax" 
+              [(ngModel)]="tempWithdrawalLimit"
+              [disabled]="!editMode"
+              class="limit-slider">
+            <div class="limit-values">
+              <span class="current-limit">{{ tempWithdrawalLimit }} TND</span>
+              <span class="max-limit">/ {{ card.plafondRetraitMax }} TND</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="limit-group">
+          <label>Plafond Paiement</label>
+          <div class="limit-control">
+            <input 
+              type="range" 
+              [min]="0" 
+              [max]="card.plafondPaiementMax" 
+              [(ngModel)]="tempPaymentLimit"
+              [disabled]="!editMode"
+              class="limit-slider">
+            <div class="limit-values">
+              <span class="current-limit">{{ tempPaymentLimit }} TND</span>
+              <span class="max-limit">/ {{ card.plafondPaiementMax }} TND</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="limits-actions">
+        <button *ngIf="!editMode" class="btn btn-primary" (click)="toggleEditMode()">
+          Modifier les plafonds
+        </button>
+        <div *ngIf="editMode" class="edit-actions">
+          <button class="btn btn-success" (click)="saveLimits()">Sauvegarder</button>
+          <button class="btn btn-secondary" (click)="toggleEditMode()">Annuler</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-actions-section">
+      <h3>Actions sur la carte</h3>
+      <div class="actions-grid">
+        <button 
+          *ngIf="card.etatCarte !== 'Bloque'" 
+          class="btn btn-warning" 
+          (click)="toggleCardStatus()">
+          {{ card.etatCarte === 'Active' ? 'Désactiver' : 'Activer' }} la carte
+        </button>
+        
+        <button 
+          *ngIf="card.etatCarte !== 'Bloque'" 
+          class="btn btn-danger" 
+          (click)="blockCard()">
+          Bloquer la carte
+        </button>
+      </div>
+    </div>
+
+    <div class="transactions-section" *ngIf="transactions?.length">
+      <h3>Transactions récentes</h3>
+      <div class="transactions-list">
+        <div *ngFor="let transaction of transactions" class="transaction-item">
+          <div class="transaction-info">
+            <span class="transaction-type">{{ transaction.type }}</span>
+            <span class="transaction-desc">{{ getTransactionDesc(transaction) }}</span>
+            <span class="transaction-date">{{ transaction.date | date:'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+          <div class="transaction-amount" [class.negative]="transaction.montant < 0">
+            -{{ transaction.montant | number:'1.2-2' }} TND
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-outline" (click)="viewAllTransactions()" >
+        Voir toutes les transactions
+      </button>
+    </div>
+  </div>
+</div>

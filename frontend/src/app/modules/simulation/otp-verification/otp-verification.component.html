@@ -1,0 +1,157 @@
+<div class="otp-overlay">
+  <div class="otp-container">
+    <!-- Header with 3D Secure branding -->
+    <div class="otp-header">
+      <div class="secure-badge">
+        <div class="secure-icon">🔐</div>
+        <div class="secure-text">
+          <span class="secure-title">3D Secure</span>
+          <span class="secure-subtitle">Authentification sécurisée</span>
+        </div>
+      </div>
+      <div class="bank-logo">
+        <img src="https://images.pexels.com/photos/259027/pexels-photo-259027.jpeg?auto=compress&cs=tinysrgb&w=60" 
+             alt="STB Logo" class="logo-img">
+        <span class="bank-name">STB Banking</span>
+      </div>
+    </div>
+
+    <!-- Transaction Summary -->
+    <div class="transaction-summary" *ngIf="transactionData">
+      <h3>Confirmation de transaction</h3>
+      <div class="transaction-details">
+        <div class="detail-row">
+          <span class="label">Type:</span>
+          <span class="value">{{ transactionData.type }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Montant:</span>
+          <span class="value amount">{{ transactionData.amount | number:'1.2-2' }} TND</span>
+        </div>
+        <div class="detail-row" *ngIf="transactionData.merchant">
+          <span class="label">Marchand:</span>
+          <span class="value">{{ transactionData.merchant }}</span>
+        </div>
+        <div class="detail-row" *ngIf="transactionData.description">
+          <span class="label">Description:</span>
+          <span class="value">{{ transactionData.description }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- OTP Instructions -->
+    <div class="otp-instructions">
+      <div class="instruction-icon">📱</div>
+      <h4>Code de vérification requis</h4>
+      <p>
+        Un code de sécurité à 6 chiffres a été envoyé par SMS au numéro 
+        <strong>{{ getMaskedPhone() }}</strong>
+      </p>
+      <p class="instruction-note">
+        Saisissez ce code ci-dessous pour confirmer votre transaction
+      </p>
+    </div>
+
+    <!-- OTP Input Fields -->
+    <div class="otp-input-section">
+     <div class="otp-inputs">
+  <input
+    *ngFor="let digit of otpCode; let i = index; trackBy: trackByIndex"
+    [id]="'otp-' + i"
+    type="text"
+    maxlength="1"
+    class="otp-digit"
+    [(ngModel)]="otpCode[i]"
+    [class.filled]="otpCode[i] !== ''"
+    [class.error]="errorMessage !== ''"
+    (keydown)="onKeyDown($event, i)"
+    (paste)="onPaste($event)"
+    autocomplete="off"
+  >
+</div>
+
+      
+      <!-- Timer -->
+      <div class="timer-section">
+        <div class="timer" [class.warning]="timeLeft < 60">
+          <span class="timer-icon">⏱️</span>
+          <span class="timer-text">Expire dans: {{ formatTime(timeLeft) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Messages -->
+    <div class="message-section">
+      <div class="error-message" *ngIf="errorMessage">
+        <span class="error-icon">❌</span>
+        {{ errorMessage }}
+      </div>
+      
+      <div class="success-message" *ngIf="successMessage">
+        <span class="success-icon">✅</span>
+        {{ successMessage }}
+      </div>
+      
+      <div class="loading-message" *ngIf="isVerifying">
+        <div class="loading-spinner"></div>
+        <span>Vérification en cours...</span>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="otp-actions">
+  <button 
+    class="btn-verify" 
+    (click)="onVerifyClick()"
+    [disabled]="isVerifyDisabled()"
+>
+    ✅ Valider le code
+  </button>
+
+  <button class="btn-cancel" (click)="onCancel()">
+    ❌ Annuler
+  </button>
+
+  <button 
+    class="btn-resend" 
+    (click)="resendOtp()"
+    [disabled]="!canResend">
+    🔄 Renvoyer le code
+  </button>
+</div>
+
+
+    <!-- Help Section -->
+    <div class="help-section">
+      <details class="help-details">
+        <summary>Besoin d'aide ?</summary>
+        <div class="help-content">
+          <p><strong>Code de démonstration:</strong></p>
+          <ul>
+            <li>Utilisez <code>123456</code> pour une vérification réussie</li>
+            <li>Ou tout code se terminant par <code>00</code></li>
+          </ul>
+          <p><strong>Problèmes courants:</strong></p>
+          <ul>
+            <li>Vérifiez que votre téléphone reçoit les SMS</li>
+            <li>Le code expire après 5 minutes</li>
+            <li>Contactez votre banque si le problème persiste</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+
+    <!-- Security Footer -->
+    <div class="security-footer">
+      <div class="security-icons">
+        <span>🔒</span>
+        <span>🛡️</span>
+        <span>✅</span>
+      </div>
+      <p>Cette transaction est sécurisée par le protocole 3D Secure</p>
+      <p class="security-note">
+        Ne partagez jamais votre code de vérification avec qui que ce soit
+      </p>
+    </div>
+  </div>
+</div>

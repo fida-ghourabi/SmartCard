@@ -1,0 +1,157 @@
+<!-- src/app/modules/history/history.component.html -->
+<div class="history-container">
+  <div class="history-header">
+    <h2>Historique des Transactions</h2>
+    <p>Consultez et recherchez vos transactions</p>
+  </div>
+
+  <!-- Filtres -->
+  <div class="filters-section">
+    <div class="search-bar">
+      <div class="search-input-wrapper">
+        <input
+          type="text"
+          [ngModel]="searchTerm()"
+          (ngModelChange)="searchTerm.set($event); onSearch()"
+          placeholder="Rechercher par texte, type, montant, lieu..."
+          class="search-input">
+        <span class="search-icon">🔍</span>
+      </div>
+    </div>
+
+    <div class="filters-row">
+      <!-- Filtre carte (liste des cartes du client) -->
+      <div class="filter-group" *ngIf="cards().length > 0">
+        <label for="cardFilter">Carte :</label>
+        <select
+          id="cardFilter"
+          [ngModel]="selectedCardFilter()"
+          (ngModelChange)="selectedCardFilter.set($event); onFilterChange()"
+          class="filter-select">
+          <option value="">Toutes les cartes</option>
+          <option *ngFor="let c of cards()" [value]="c.id">
+            {{ getCardLabel(c) }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Filtre type -->
+      <div class="filter-group">
+        <label for="typeFilter">Type :</label>
+        <select
+          id="typeFilter"
+          [ngModel]="selectedTypeFilter()"
+          (ngModelChange)="selectedTypeFilter.set($event); onFilterChange()"
+          class="filter-select">
+          <option value="">Tous les types</option>
+          <option *ngFor="let t of transactionTypes" [value]="t">{{ t }}</option>
+        </select>
+      </div>
+
+      <!-- Tri -->
+      <div class="filter-group">
+        <label for="sortBy">Trier par :</label>
+        <select
+          id="sortBy"
+          [ngModel]="sortBy()"
+          (ngModelChange)="sortBy.set($event); onSortChange()"
+          class="filter-select">
+          <option value="date">Date</option>
+          <option value="montant">Montant</option>
+          <option value="type">Type</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="sortOrder">Ordre :</label>
+        <select
+          id="sortOrder"
+          [ngModel]="sortOrder()"
+          (ngModelChange)="sortOrder.set($event); onSortChange()"
+          class="filter-select">
+          <option value="desc">Décroissant</option>
+        <option value="asc">Croissant</option>
+        </select>
+      </div>
+
+      <button class="btn btn-secondary" (click)="clearFilters()">
+        Effacer les filtres
+      </button>
+    </div>
+  </div>
+
+  <!-- Résumé / actions -->
+  <div class="transactions-header">
+    <h3>{{ filtered().length }} transaction(s) • Total: {{ totalMontant() | number:'1.2-2' }} TND</h3>
+    <button class="btn btn-primary" (click)="exportTransactionsPDF()">Exporter</button>
+  </div>
+
+  <!-- Liste -->
+  <div class="transactions-list" *ngIf="filtered().length > 0; else noData">
+    <div *ngFor="let t of filtered()" class="transaction-item">
+      <div class="transaction-main">
+        <div class="transaction-info">
+          <div class="transaction-header">
+            <span class="transaction-type">{{ t.type }}</span>
+            <span class="transaction-date">{{ t.date | date:'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+
+          <!-- Description dynamique selon type -->
+          <div class="transaction-description">
+            <ng-container [ngSwitch]="t.type">
+              <ng-container *ngSwitchCase="'Paiement'">
+                <span *ngIf="t.sourcePaiement; else noDesc">{{ t.sourcePaiement }}</span>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'Transfert'">
+                <span *ngIf="t.compteDestinataire; else noDesc">{{ t.compteDestinataire }}</span>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'Retrait'">
+                <span *ngIf="t.typeRetrait">{{ t.typeRetrait }}</span>
+                <span *ngIf="t.nomBanque"> - {{ t.nomBanque }}</span>
+                <span *ngIf="t.lieu"> - {{ t.lieu }}</span>
+                <ng-container *ngIf="!t.typeRetrait && !t.nomBanque && !t.lieu">
+                  <ng-container *ngTemplateOutlet="noDesc"></ng-container>
+                </ng-container>
+              </ng-container>
+
+              <ng-container *ngSwitchDefault>
+                <ng-container *ngTemplateOutlet="noDesc"></ng-container>
+              </ng-container>
+            </ng-container>
+
+            <ng-template #noDesc>
+              <span>{{ t.description || '—' }}</span>
+            </ng-template>
+          </div>
+
+          <!-- Carte liée (si exposée par l’API) -->
+          <div class="transaction-card" *ngIf="t.numeroCarte || t.typeCarte">
+            <span class="card-label">Carte :</span>
+            <span class="card-info">
+              {{ t.typeCarte || 'Carte' }} — xxxx xxxx xxxx {{ (t.numeroCarte || '') | slice:-4 }}
+            </span>
+          </div>
+        </div>
+
+        <div class="transaction-amount" >
+          -{{ t.montant | number:'1.2-2' }} TND
+        </div>
+      </div>
+
+      <!--<div class="transaction-balance" *ngIf="t.soldeCompte !== undefined && t.soldeCompte !== null">
+        <span class="balance-label">Solde après transaction :</span>
+        <span class="balance-amount">{{ t.soldeCompte | number:'1.2-2' }} TND</span>
+      </div>-->
+    </div>
+  </div>
+
+  <ng-template #noData>
+    <div class="no-transactions">
+      <div class="no-transactions-icon">📄</div>
+      <h3>Aucune transaction trouvée</h3>
+      <p>Essayez de modifier vos critères de recherche ou vos filtres.</p>
+    </div>
+  </ng-template>
+</div>

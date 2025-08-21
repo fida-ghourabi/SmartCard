@@ -1,0 +1,5 @@
+# Dossiers et fichiers Visual Studio
+.vs/
+*.vsidx
+# Fichier de configuration sensible
+appsettings.json
