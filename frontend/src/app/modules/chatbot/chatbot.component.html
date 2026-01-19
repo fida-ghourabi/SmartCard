@@ -1,0 +1,63 @@
+<!-- Bouton flottant -->
+<div class="chatbot-trigger" [class.open]="isOpen" [class.minimized]="isMinimized" (click)="toggleChat()">
+  <div class="trigger-icon" *ngIf="!isOpen">
+    <span class="bot-icon">🤖</span>
+    <div class="notification-badge" *ngIf="unreadCount > 0">{{ unreadCount }}</div>
+  </div>
+  <div class="trigger-close" *ngIf="isOpen"><span>✕</span></div>
+</div>
+
+<!-- Fenêtre -->
+<div class="chatbot-container" [class.open]="isOpen" [class.minimized]="isMinimized">
+  <div class="chatbot-header">
+    <div class="header-info">
+      <div class="bot-avatar"><span>🤖</span></div>
+      <div class="bot-details">
+        <h3>Assistant STB</h3>
+        <span class="status">En ligne</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="minimize-btn" (click)="minimizeChat()"><span>−</span></button>
+    </div>
+  </div>
+
+  <div class="chat-messages">
+    <div *ngFor="let message of messages" class="message" [class.user-message]="message.isUser" [class.bot-message]="!message.isUser">
+      <div class="message-avatar" *ngIf="!message.isUser"><span>🤖</span></div>
+      <div class="message-content">
+        <div class="message-bubble"><p>{{ message.text }}</p></div>
+        <div class="message-time">{{ formatTime(message.timestamp) }}</div>
+      </div>
+      <div class="message-avatar" *ngIf="message.isUser"><span>👤</span></div>
+    </div>
+
+    <div class="message bot-message" *ngIf="isTyping">
+      <div class="message-avatar"><span>🤖</span></div>
+      <div class="message-content">
+        <div class="message-bubble typing-indicator">
+          <div class="typing-dots"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="quick-actions" *ngIf="messages.length <= 1 && !isTyping">
+    <div class="quick-actions-title">Actions rapides :</div>
+    <div class="quick-actions-grid">
+      <button *ngFor="let action of quickActions" class="quick-action-btn" (click)="sendQuickAction(action)">
+        <span class="action-icon">{{ action.icon }}</span>
+        <span class="action-text">{{ action.text }}</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="chat-input">
+    <div class="input-container">
+      <input type="text" [(ngModel)]="currentMessage" (keypress)="onKeyPress($event)" placeholder="Tapez votre message..." class="message-input" [disabled]="isTyping">
+      <button class="send-btn" (click)="sendMessage()" [disabled]="!currentMessage.trim() || isTyping"><span>📤</span></button>
+    </div>
+  </div>
+</div>
+
+<div class="chatbot-overlay" *ngIf="isOpen" (click)="toggleChat()"></div>

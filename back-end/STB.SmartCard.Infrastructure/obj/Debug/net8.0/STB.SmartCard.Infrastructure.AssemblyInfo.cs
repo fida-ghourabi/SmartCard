@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("STB.SmartCard.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b579afdabf9fef91827b513252f85d1ba81c0eb7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b2ae8872acc7448c44566d9ed966a554a44ac05e")]
 [assembly: System.Reflection.AssemblyProductAttribute("STB.SmartCard.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("STB.SmartCard.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

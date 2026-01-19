@@ -1,0 +1,14 @@
+C:\STB\SmartCard\back-end\STB.SmartCard.Domain\bin\Release\net8.0\publish\STB.SmartCard.Domain.dll
+C:\STB\SmartCard\back-end\STB.SmartCard.Domain\bin\Release\net8.0\publish\STB.SmartCard.Domain.deps.json
+C:\STB\SmartCard\back-end\STB.SmartCard.Domain\bin\Release\net8.0\publish\STB.SmartCard.Domain.pdb
+C:\STB\SmartCard\back-end\STB.SmartCard.Domain\bin\Release\net8.0\publish\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\STB\SmartCard\back-end\STB.SmartCard.Domain\bin\Release\net8.0\publish\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\STB\SmartCard\back-end\STB.SmartCard.Domain\bin\Release\net8.0\publish\Microsoft.Extensions.Caching.Abstractions.dll
+C:\STB\SmartCard\back-end\STB.SmartCard.Domain\bin\Release\net8.0\publish\Microsoft.Extensions.DependencyInjection.dll
+C:\STB\SmartCard\back-end\STB.SmartCard.Domain\bin\Release\net8.0\publish\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\STB\SmartCard\back-end\STB.SmartCard.Domain\bin\Release\net8.0\publish\Microsoft.Extensions.Identity.Core.dll
+C:\STB\SmartCard\back-end\STB.SmartCard.Domain\bin\Release\net8.0\publish\Microsoft.Extensions.Identity.Stores.dll
+C:\STB\SmartCard\back-end\STB.SmartCard.Domain\bin\Release\net8.0\publish\Microsoft.Extensions.Logging.dll
+C:\STB\SmartCard\back-end\STB.SmartCard.Domain\bin\Release\net8.0\publish\Microsoft.Extensions.Logging.Abstractions.dll
+C:\STB\SmartCard\back-end\STB.SmartCard.Domain\bin\Release\net8.0\publish\Microsoft.Extensions.Options.dll
+C:\STB\SmartCard\back-end\STB.SmartCard.Domain\bin\Release\net8.0\publish\Microsoft.Extensions.Primitives.dll

@@ -11,28 +11,19 @@ export class TransactionService {
 
   constructor(private http: HttpClient) { }
 
-  private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('authToken');
-    return new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    });
-  }
-
+  
 
   /** 🔹 Récupérer toutes les transactions du client connecté */
   getClientTransactions(): Observable<TransactionDto[]> {
     return this.http.get<TransactionDto[]>(
-      `${this.apiBase}/Transactions/client`,
-      { headers: this.getAuthHeaders() }
+      `${this.apiBase}/Transactions/client`
     );
   }
 
   /** 🔹 Récupérer la liste des cartes du client (pour filtrer/étiqueter) */
   getClientCards(): Observable<CardLight[]> {
     return this.http.get<any[]>(
-      `${this.apiBase}/Cartes/mescartes`,
-      { headers: this.getAuthHeaders() }
+      `${this.apiBase}/Cartes/mescartes`
     ).pipe(
       map(cards => cards.map(c => ({
         id: c.id,

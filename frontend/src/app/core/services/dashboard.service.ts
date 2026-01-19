@@ -10,23 +10,15 @@ export class DashboardService {
   private apiUrl = 'https://localhost:7137/api'; 
   constructor(private http: HttpClient) { }
 
-private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('authToken');
-    return new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    });
-  }
+
 
   // 🔹 Récup solde total
   getSoldeTotal(): Observable<number> {
-    return this.http.get<number>(`${this.apiUrl}/comptes/solde-total`, { headers: this.getAuthHeaders() });
+    return this.http.get<number>(`${this.apiUrl}/comptes/solde-total`);
   }
 
   getLastTransaction(): Observable<TransactionDto> {
-    return this.http.get<TransactionDto>(`${this.apiUrl}/transactions/dernier`, {
-      headers: this.getAuthHeaders()
-    });
+    return this.http.get<TransactionDto>(`${this.apiUrl}/transactions/dernier`);
   }
 
 
@@ -34,9 +26,7 @@ private getAuthHeaders(): HttpHeaders {
   getCarteStats(): Observable<{ clientId: string, totalCartes: number, cartesActives: number }> {
     return this.http.get<{ clientId: string, totalCartes: number, cartesActives: number }>(
       `${this.apiUrl}/cartes/stats`
-    , {
-      headers: this.getAuthHeaders()
-    });
+   );
   }
 
 }

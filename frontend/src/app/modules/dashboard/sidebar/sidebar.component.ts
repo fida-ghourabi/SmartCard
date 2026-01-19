@@ -20,7 +20,7 @@ export class SidebarComponent {
     { id: 'cards', label: 'Mes Cartes', icon: '💳', route: '/dashboard/cartes' },
     { 
       id: 'simulation', 
-      label: 'Simulation', 
+      label: 'Transaction', 
       icon: '🔄',
       hasSubmenu: true,
       submenu: [

@@ -1,0 +1,13 @@
+C:\STB\SmartCard\back-end\STB.SmartCard.Domain\bin\Release\net8.0\STB.SmartCard.Domain.deps.json
+C:\STB\SmartCard\back-end\STB.SmartCard.Domain\bin\Release\net8.0\STB.SmartCard.Domain.dll
+C:\STB\SmartCard\back-end\STB.SmartCard.Domain\bin\Release\net8.0\STB.SmartCard.Domain.pdb
+C:\STB\SmartCard\back-end\STB.SmartCard.Domain\obj\Release\net8.0\STB.SmartCard.Domain.csproj.AssemblyReference.cache
+C:\STB\SmartCard\back-end\STB.SmartCard.Domain\obj\Release\net8.0\STB.SmartCard.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\STB\SmartCard\back-end\STB.SmartCard.Domain\obj\Release\net8.0\STB.SmartCard.Domain.AssemblyInfoInputs.cache
+C:\STB\SmartCard\back-end\STB.SmartCard.Domain\obj\Release\net8.0\STB.SmartCard.Domain.AssemblyInfo.cs
+C:\STB\SmartCard\back-end\STB.SmartCard.Domain\obj\Release\net8.0\STB.SmartCard.Domain.csproj.CoreCompileInputs.cache
+C:\STB\SmartCard\back-end\STB.SmartCard.Domain\obj\Release\net8.0\STB.SmartCard.Domain.sourcelink.json
+C:\STB\SmartCard\back-end\STB.SmartCard.Domain\obj\Release\net8.0\STB.SmartCard.Domain.dll
+C:\STB\SmartCard\back-end\STB.SmartCard.Domain\obj\Release\net8.0\refint\STB.SmartCard.Domain.dll
+C:\STB\SmartCard\back-end\STB.SmartCard.Domain\obj\Release\net8.0\STB.SmartCard.Domain.pdb
+C:\STB\SmartCard\back-end\STB.SmartCard.Domain\obj\Release\net8.0\ref\STB.SmartCard.Domain.dll

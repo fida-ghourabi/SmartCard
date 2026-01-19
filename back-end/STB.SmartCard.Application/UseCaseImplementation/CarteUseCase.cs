@@ -50,10 +50,20 @@ namespace STB.SmartCard.Application.UseCaseImplementation
             await _carteRepository.UpdateAsync(carte);
             // Email de notification
             var email = carte.Compte.Client.User.Email;
-            await _emailService.SendEmailAsync(email,
+            // Texte lisible pour l'email
+            string etatLisible = nouvelEtat switch
+            {
+                EtatCarteEnum.Active => "activée",
+                EtatCarteEnum.Desactive => "désactivée",
+                EtatCarteEnum.Bloque => "bloquée",
+                _ => nouvelEtat.ToString()
+            };
+
+            await _emailService.SendEmailAsync(
+                email,
                 "Mise à jour de votre carte",
-                $"Votre carte {carte.NumeroCarte} est maintenant en état : {nouvelEtat}");
-        
+                $"Votre carte {carte.NumeroCarte} est maintenant {etatLisible}."
+            );
         }
         public async Task UpdatePlafondsAsync(CardPlafondUpdateDto dto)
         {

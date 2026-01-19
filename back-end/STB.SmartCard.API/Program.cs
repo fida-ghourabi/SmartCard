@@ -5,9 +5,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using STB.SmartCard.Application.DependencyInjection;
+using STB.SmartCard.Application.Services.Chatbot;
 using STB.SmartCard.Domain.Entities;
 using STB.SmartCard.Infrastructure.DataBaseContext;
 using STB.SmartCard.Infrastructure.DependencyInjection;
+using STB.SmartCard.Infrastructure.Services.Chatbot;
 using System.Text;
 
 
@@ -15,8 +17,12 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// 🔹 Charger appsettings.Production.json si environnement = Production
+builder.Configuration
+       .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+       .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
 
-  
+
 
 
 // Add services to the container.
@@ -98,6 +104,8 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key!))
     };
 
+    // register Chatbot service and HttpClient factory for OpenAI
+    
 
 
     // ? LOG DES ERREURS D'AUTHENTIFICATION
@@ -115,6 +123,20 @@ builder.Services.AddAuthentication(options =>
         }
     };
 
+});
+
+
+// ✅ HttpClient OpenAI configuré correctement
+builder.Services.AddHttpClient("openai", client =>
+{
+    var apiKey = builder.Configuration["OpenAI:ApiKey"];
+    if (!string.IsNullOrEmpty(apiKey))
+    {
+        client.DefaultRequestHeaders.Authorization =
+            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiKey);
+    }
+    client.DefaultRequestHeaders.Accept.Add(
+        new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 });
 
 var app = builder.Build();

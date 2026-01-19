@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using STB.SmartCard.Application.Services.Chatbot;
 using STB.SmartCard.Application.Services.Email;
 using STB.SmartCard.Application.Services.Sms;
 using STB.SmartCard.Domain.RepositoryInterfaces;
 using STB.SmartCard.Infrastructure.RepositoryImplementation;
+using STB.SmartCard.Infrastructure.Services.Chatbot;
 using STB.SmartCard.Infrastructure.Services.Email;
 using STB.SmartCard.Infrastructure.Services.Sms;
 using System;
@@ -25,6 +27,7 @@ namespace STB.SmartCard.Infrastructure.DependencyInjection
             services.AddScoped<IEmailService, EmailService>();
             services.AddHttpClient<ISmsService, SmsService>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IChatbotService, ChatbotAIService>();
 
             return services;
         }

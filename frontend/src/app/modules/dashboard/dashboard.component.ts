@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { RouterModule } from '@angular/router';
+import { ChatbotComponent } from '../chatbot/chatbot.component';
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -11,6 +13,8 @@ import { RouterModule } from '@angular/router';
     RouterModule,
     NavbarComponent, 
     SidebarComponent, 
+    ChatbotComponent
+    
     
   ],
   templateUrl: './dashboard.component.html',

@@ -69,7 +69,7 @@
       <div class="card-preview" *ngIf="sourceCard">
         <h4>Carte Source</h4>
         <div class="card-visual">
-          <img [src]="sourceCard.imageUrl" [alt]="sourceCard.typeCarte">
+          <img [src]="'https://images.pexels.com/photos/259200/pexels-photo-259200.jpeg?auto=compress&cs=tinysrgb&w=400'" [alt]="sourceCard.typeCarte">
           <div class="card-overlay">
             <div class="card-info">
               <h5>{{ sourceCard.typeCarte }}</h5>
@@ -102,7 +102,7 @@
   </div>
 
   <div class="simulation-result" *ngIf="simulationResult">
-    <h3>Résultat de la simulation</h3>
+    <h3>Résultat du transfert</h3>
     <div class="result-card" [class.success]="simulationResult.success" [class.error]="!simulationResult.success">
       <div class="result-header">
         <span class="result-icon">{{ simulationResult.success ? '✅' : '❌' }}</span>

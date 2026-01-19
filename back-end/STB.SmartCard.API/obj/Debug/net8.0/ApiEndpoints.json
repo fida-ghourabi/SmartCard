@@ -84,6 +84,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "STB.SmartCard.API.Controllers.ChatbotController",
+    "Method": "Ask",
+    "RelativePath": "api/Chatbot/ask",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "STB.SmartCard.Application.DTOs.ChatRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "STB.SmartCard.API.Controllers.ComptesController",
     "Method": "GetSoldeTotal",
     "RelativePath": "api/Comptes/solde-total",
