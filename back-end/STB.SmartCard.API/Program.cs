@@ -17,17 +17,23 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 🔹 Charger appsettings.Production.json si environnement = Production
-builder.Configuration
-       .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-       .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
+// aws
+var dbServer = Environment.GetEnvironmentVariable("DB_SERVER");
+if (!string.IsNullOrEmpty(dbServer))
+{
+    var dbUser = Environment.GetEnvironmentVariable("DB_USER");
+    var dbPass = Environment.GetEnvironmentVariable("DB_PASS");
+    var awsConnection = $"Server={dbServer}\\SQLEXPRESS;Database=SmartCardDb;User Id={dbUser};Password={dbPass};TrustServerCertificate=True";
+    builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(awsConnection));
+}
+else
+{
+    // Si pas de variables d'environnement → on utilise ton appsettings.json local
+    builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("connectionString")));
+}
 
 
 
-
-// Add services to the container.
-
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("connectionString")));
 
 // 1️⃣ Déclarer une politique CORS
 builder.Services.AddCors(options =>
